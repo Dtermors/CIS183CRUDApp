@@ -1,8 +1,10 @@
 package com.example.cis183crudapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -77,7 +79,8 @@ public class UpdateStudent extends AppCompatActivity {
             setSelectedMajor(student.getMajor());
         } else {
             // Handle case when student is not found
-            et_j_fname.setText("Student Not Found");
+            Toast.makeText(this, "Student Not Found", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -94,22 +97,20 @@ public class UpdateStudent extends AppCompatActivity {
         List<String> majorList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = databaseHelper.getReadableDatabase();
         Cursor cursor = null;
-
         try {
             cursor = sqLiteDatabase.rawQuery("SELECT " + DatabaseHelper.col_major_name + " FROM " + DatabaseHelper.tableofMajors, null);
-            if (cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
                 do {
                     majorList.add(cursor.getString(0));
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) { // Catching general Exception
+        } catch (SQLiteException e) {
             Toast.makeText(this, "Database error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-
         majorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, majorList);
         majorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_j_major.setAdapter(majorAdapter);
@@ -123,9 +124,21 @@ public class UpdateStudent extends AppCompatActivity {
         float gpa = Float.parseFloat(et_j_gpa.getText().toString());
         String major = sp_j_major.getSelectedItem().toString();
 
-        if (databaseHelper.updateStudent(new Student(fname, lname, username, email, age, gpa, major))) {
+        // Check for empty fields, if needed
+        if (fname.isEmpty() || lname.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Student updatedStudent = new Student(fname, lname, username, email, age, gpa, major);
+        if (databaseHelper.updateStudent(updatedStudent)) {
             Toast.makeText(this, "Student updated successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Return to previous activity
+
+            // Create an intent to go back to the details page
+            Intent intent = new Intent(this, Details.class);
+            intent.putExtra("username", username); // Send the updated username
+            startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Error updating student", Toast.LENGTH_SHORT).show();
         }

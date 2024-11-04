@@ -58,6 +58,14 @@ public class Details extends AppCompatActivity {
         //load details
         loadDetails(username);
     }
+    // loads the student details again when finished editing
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String username = getIntent().getStringExtra("username");
+        loadDetails(username);
+    }
+
     private void loadDetails (String username)
     {
         DatabaseHelper sqLiteDatabase = new DatabaseHelper(this);

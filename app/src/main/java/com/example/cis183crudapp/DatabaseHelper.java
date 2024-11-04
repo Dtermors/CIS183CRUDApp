@@ -159,15 +159,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateStudent(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("fname", student.getFname());
-        values.put("lname", student.getLname());
-        values.put("email", student.getEmail());
-        values.put("age", student.getAge());
-        values.put("gpa", student.getGpa());
-        values.put("major", student.getMajor());
+        values.put(col_fname, student.getFname());
+        values.put(col_lname, student.getLname());
+        values.put(col_email, student.getEmail());
+        values.put(col_age, student.getAge());
+        values.put(col_gpa, student.getGpa());
+        values.put(col_major, student.getMajor());
 
-        // Update the student based on the username
-        int rowsAffected = db.update(tableOfStudents, values, "uname = ?", new String[]{student.getUname()});
-        return rowsAffected > 0;
+        // Update the row where the username matches
+        int result = db.update(tableOfStudents, values, col_uname + "=?", new String[]{student.getUname()});
+        return result > 0; // Returns true if at least one row was updated
     }
+
+
 }

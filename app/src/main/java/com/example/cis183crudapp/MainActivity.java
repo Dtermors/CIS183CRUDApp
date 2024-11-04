@@ -15,10 +15,12 @@ public class MainActivity extends AppCompatActivity {
     //variables
     Button btn_j_add;
     Button btn_j_addmajors;
+    Button btn_j_search;
     ListView lv_j_studentlist;
     StudentListAdapter StudentListAdapter;
     Intent intent_j_add;
     Intent intent_j_addmajors;
+    Intent intent_j_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_j_add = findViewById(R.id.btn_v_add);
         btn_j_addmajors = findViewById(R.id.btn_v_addmajor);
+        btn_j_search = findViewById(R.id.btn_v_search);
         lv_j_studentlist = findViewById(R.id.lv_v_studentlist);
 
         loadStudentTable();
@@ -45,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 intent_j_add  = new Intent(MainActivity.this, AddStudent.class);
                 startActivity(intent_j_add);
+            }
+        });
+        btn_j_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent_j_search = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent_j_search);
             }
         });
 

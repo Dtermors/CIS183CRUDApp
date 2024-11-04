@@ -43,7 +43,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lv_v_studentlist" />
+        app:layout_constraintTop_toBottomOf="@+id/lv_v_studentlist"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btn_v_addmajor"
@@ -54,9 +55,18 @@
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.894"
+        app:layout_constraintHorizontal_bias="0.898"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_v_studentlist" />
+
+    <Button
+        android:id="@+id/btn_v_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Search"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_v_addmajor"
+        app:layout_constraintStart_toEndOf="@+id/btn_v_add" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
